@@ -45,7 +45,7 @@ class ComponentBinder(private val injector: Injector,
         }
     }
 
-    abstract class OptionalTransformBinder<T1>(private val injector: Injector, private val binder: Binder) : TransformBinder<T1> {
+    abstract class OptionalTransformBinder<T1>(protected val injector: Injector, protected val binder: Binder) : TransformBinder<T1> {
 
         private var allowed = true
 
@@ -63,8 +63,8 @@ class ComponentBinder(private val injector: Injector,
     }
 
     class MethodBinder(private val type: Class<*>,
-                       private val injector: Injector,
-                       private val binder: Binder) : OptionalTransformBinder<Method>(injector, binder) {
+                       injector: Injector,
+                       binder: Binder) : OptionalTransformBinder<Method>(injector, binder) {
 
         override fun <A : Annotation, T : Any> transform(annotation: Class<A>, to: Class<T>, map: (Method, A) -> Module): InternalBinder<T> {
             return InternalBinder(optionalReform(injector, Methods.annotatedMethods(type, annotation).stream(), annotation, to, map), to, binder)
@@ -73,8 +73,8 @@ class ComponentBinder(private val injector: Injector,
     }
 
     class FieldBinder(private val type: Class<*>,
-                      private val injector: Injector,
-                      private val binder: Binder): OptionalTransformBinder<Field>(injector, binder) {
+                      injector: Injector,
+                      binder: Binder): OptionalTransformBinder<Field>(injector, binder) {
 
         override fun <A : Annotation, T : Any> transform(annotation: Class<A>, to: Class<T>, map: (Field, A) -> Module): InternalBinder<T> {
             return InternalBinder(optionalReform(injector, Fields.annotatedFields(type, annotation).stream(), annotation, to, map), to, binder)
@@ -83,8 +83,8 @@ class ComponentBinder(private val injector: Injector,
     }
 
     class ClassBinder(private val classes: Collection<Class<*>>,
-                      private val injector: Injector,
-                      private val binder: Binder): OptionalTransformBinder<Class<*>>(injector, binder) {
+                      injector: Injector,
+                      binder: Binder): OptionalTransformBinder<Class<*>>(injector, binder) {
 
         override fun <A : Annotation, T : Any> transform(annotation: Class<A>, to: Class<T>, map: (Class<*>, A) -> Module): InternalBinder<T> {
             return InternalBinder(optionalReform(injector, classes.stream(), annotation, to, map), to, binder)
@@ -101,12 +101,4 @@ class ComponentBinder(private val injector: Injector,
         }
 
     }
-
-    @FunctionalInterface
-    interface InternalFunction<T1, T2, R> {
-
-        fun apply(t1: T1, t2: T2): R
-
-    }
-
 }
