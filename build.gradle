@@ -1,0 +1,23 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.2.71'
+}
+
+group 'av.is.aopcf.kt'
+version '1.0-SNAPSHOT'
+
+wrapper {
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    api group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8'
+
+    api group: 'com.google.guava', name: 'guava', version: '26.0-jre'
+    api group: 'com.google.inject', name: 'guice', version: '4.2.0'
+
+    testApi group: 'org.jetbrains.kotlin', name: 'kotlin-test'
+}
