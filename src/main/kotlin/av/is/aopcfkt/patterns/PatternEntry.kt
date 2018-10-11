@@ -4,8 +4,8 @@ import com.google.common.base.Objects
 
 class PatternEntry<T : Any> {
 
-    private val argument: T?
-    private val pattern: String?
+    val argument: T?
+    val pattern: String?
     private val parameterType: Class<T>
 
     constructor(argument: T?, pattern: String?, parameterType: Class<T>) {
@@ -22,26 +22,13 @@ class PatternEntry<T : Any> {
         this.parameterType = parameterType
     }
 
-    fun getArgument(): T? {
-        return argument
-    }
-
-    fun getPattern(): String? {
-        return pattern
-    }
-
     override fun hashCode(): Int {
         return Objects.hashCode(argument, pattern, parameterType)
     }
 
     fun matches(argument: PatternEntry<*>): Boolean {
-        var matches = if(getArgument() != null) {
-            getArgument()!! == argument.getArgument()
-        } else {
-            true
-        }
-        matches = matches && parameterType == argument.parameterType
-        return matches
+        return this.argument?.let { it == argument.argument } ?: true
+                && parameterType == argument.parameterType
     }
 
     override fun equals(other: Any?): Boolean {
@@ -50,11 +37,7 @@ class PatternEntry<T : Any> {
 
         other as PatternEntry<*>
 
-        if (argument != other.argument) return false
-        if (pattern != other.pattern) return false
-        if (parameterType != other.parameterType) return false
-
-        return true
+        return argument == other.argument && pattern == other.pattern&& parameterType == other.parameterType
     }
 
 }

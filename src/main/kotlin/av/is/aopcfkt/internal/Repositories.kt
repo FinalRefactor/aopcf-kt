@@ -7,8 +7,10 @@ class Repositories {
     @Inject internal var repositories: Set<Repository>? = null
 
     fun prints() {
-        println("repositories: ${repositories!!.size}")
-        repositories!!.forEach(Repository::prints)
+        val repositories = repositories as Set<Repository>
+
+        println("repositories: ${repositories.size}")
+        repositories.forEach { it.prints() }
     }
 
 }

@@ -23,8 +23,8 @@ class RepositoryManifest(private val injector: Injector,
     }
 
     override fun configure() {
-        val chaining = Types.annotatedChain(type, CommandRepository::class.java)
-        chaining.ifPresent { commandRepository ->
+        val chaining = Types.annotated(type, CommandRepository::class.java)
+        chaining?.let { commandRepository ->
             val binder = ComponentBinder(injector, binder())
             binder.newMethod(type)
                     .allow(commandRepository.mappers)
@@ -34,8 +34,6 @@ class RepositoryManifest(private val injector: Injector,
                     .allow(commandRepository.commands)
                     .transform(Command::class.java, CommandContext::class.java, ::CommandManifest).bind()
 
-        }.orElse(Runnable {
-            throw IllegalArgumentException("Command repository requires @CommandRepository annotation.")
-        })
+        } ?: throw IllegalArgumentException("Command repository requires @CommandRepository annotation.")
     }
 }

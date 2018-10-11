@@ -6,19 +6,14 @@ import av.`is`.aopcfkt.patterns.NamedPattern
 import av.`is`.aopcfkt.patterns.PatternEntry
 import com.google.common.base.Objects
 import java.lang.reflect.Method
-import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
 
 class MapperImpl @Inject constructor(@Named("mapper") private val method: Method,
                                      private val pattern: String) : Mapper {
 
-    private val entries: List<PatternEntry<*>>
+    private val entries: List<PatternEntry<*>> = NamedPattern(method, pattern).getPatterns()
     private var repository: Repository? = null
-
-    init {
-        entries = NamedPattern(method, pattern).getPatterns()
-    }
 
     override fun tryInvoke(patternEntries: List<PatternEntry<*>>): Any? {
         if(entries.size != patternEntries.size) {
@@ -31,13 +26,13 @@ class MapperImpl @Inject constructor(@Named("mapper") private val method: Method
             if(!a.matches(b)) {
                 return null
             }
-            if(a.getPattern() != null) {
-                arguments += b.getArgument()!!
+            if(a.pattern != null) {
+                arguments += b.argument!!
             }
         }
 
         method.isAccessible = true
-        return method.invoke(repository!!.getInstance(), *arguments.toTypedArray())
+        return method.invoke(repository!!.instance, *arguments.toTypedArray())
     }
 
     override fun setRepository(repository: Repository) {
@@ -63,11 +58,6 @@ class MapperImpl @Inject constructor(@Named("mapper") private val method: Method
 
         other as MapperImpl
 
-        if (method != other.method) return false
-        if (pattern != other.pattern) return false
-        if (entries != other.entries) return false
-        if (repository != other.repository) return false
-
-        return true
+        return method == other.method && pattern == other.pattern && entries == other.entries && repository == other.repository
     }
 }

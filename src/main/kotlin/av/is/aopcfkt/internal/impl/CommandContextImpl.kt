@@ -25,9 +25,6 @@ class CommandContextImpl @Inject constructor(@Named("command") private val metho
 
         other as CommandContextImpl
 
-        if (method != other.method) return false
-        if (command != other.command) return false
-
-        return true
+        return method == other.method && command == other.command
     }
 }
