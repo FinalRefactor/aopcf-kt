@@ -7,9 +7,9 @@ import java.lang.reflect.Method
 import javax.inject.Inject
 import javax.inject.Named
 
-class CommandContextImpl @Inject constructor(@Named("command") private val method: Method,
-                                             private val command: Command) : CommandContext {
-
+class CommandContextImpl @Inject constructor(
+    @Named("command") private val method: Method, private val command: Command
+) : CommandContext {
     override fun hashCode(): Int {
         return Objects.hashCode(method, command)
     }

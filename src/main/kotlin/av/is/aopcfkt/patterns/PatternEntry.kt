@@ -3,7 +3,6 @@ package av.`is`.aopcfkt.patterns
 import com.google.common.base.Objects
 
 class PatternEntry<T : Any> {
-
     val argument: T?
     val pattern: String?
     private val parameterType: Class<T>
@@ -14,8 +13,7 @@ class PatternEntry<T : Any> {
         this.parameterType = parameterType
     }
 
-    constructor(argument: T): this(argument, argument.javaClass)
-
+    constructor(argument: T) : this(argument, argument.javaClass)
     constructor(argument: T, parameterType: Class<T>) {
         this.argument = argument
         this.pattern = null
@@ -27,8 +25,7 @@ class PatternEntry<T : Any> {
     }
 
     fun matches(argument: PatternEntry<*>): Boolean {
-        return this.argument?.let { it == argument.argument } ?: true
-                && parameterType == argument.parameterType
+        return this.argument?.let { it == argument.argument } ?: true && parameterType == argument.parameterType
     }
 
     override fun equals(other: Any?): Boolean {
@@ -37,7 +34,6 @@ class PatternEntry<T : Any> {
 
         other as PatternEntry<*>
 
-        return argument == other.argument && pattern == other.pattern&& parameterType == other.parameterType
+        return argument == other.argument && pattern == other.pattern && parameterType == other.parameterType
     }
-
 }

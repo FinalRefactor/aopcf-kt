@@ -11,14 +11,14 @@ import com.google.inject.AbstractModule
 import com.google.inject.Injector
 import com.google.inject.Provides
 
-class RepositoryManifest(private val injector: Injector,
-                         private val type: Class<*>) : AbstractModule() {
-
-    @Provides fun repositoryType(): Class<*> {
+class RepositoryManifest(private val injector: Injector, private val type: Class<*>) : AbstractModule() {
+    @Provides
+    fun repositoryType(): Class<*> {
         return type
     }
 
-    @Provides fun repositoryInstance(): Any {
+    @Provides
+    fun repositoryInstance(): Any {
         return injector.getInstance(type)
     }
 
@@ -26,13 +26,11 @@ class RepositoryManifest(private val injector: Injector,
         val chaining = Types.annotated(type, CommandRepository::class.java)
         chaining?.let { commandRepository ->
             val binder = ComponentBinder(injector, binder())
-            binder.newMethod(type)
-                    .allow(commandRepository.mappers)
-                    .transform(ParameterMapper::class.java, Mapper::class.java, ::MapperManifest).bind()
+            binder.newMethod(type).allow(commandRepository.mappers)
+                .transform(ParameterMapper::class.java, Mapper::class.java, ::MapperManifest).bind()
 
-            binder.newMethod(type)
-                    .allow(commandRepository.commands)
-                    .transform(Command::class.java, CommandContext::class.java, ::CommandManifest).bind()
+            binder.newMethod(type).allow(commandRepository.commands)
+                .transform(Command::class.java, CommandContext::class.java, ::CommandManifest).bind()
 
         } ?: throw IllegalArgumentException("Command repository requires @CommandRepository annotation.")
     }

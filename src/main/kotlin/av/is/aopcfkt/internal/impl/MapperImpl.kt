@@ -9,24 +9,22 @@ import java.lang.reflect.Method
 import javax.inject.Inject
 import javax.inject.Named
 
-class MapperImpl @Inject constructor(@Named("mapper") private val method: Method,
-                                     private val pattern: String) : Mapper {
-
+class MapperImpl @Inject constructor(@Named("mapper") private val method: Method, private val pattern: String) :
+    Mapper {
     private val entries: List<PatternEntry<*>> = NamedPattern(method, pattern).getPatterns()
     private var repository: Repository? = null
-
     override fun tryInvoke(patternEntries: List<PatternEntry<*>>): Any? {
-        if(entries.size != patternEntries.size) {
+        if (entries.size != patternEntries.size) {
             return null
         }
         val arguments = mutableListOf<Any>()
-        for(i in 0 until entries.size) {
+        for (i in 0 until entries.size) {
             val a = entries[i]
             val b = patternEntries[i]
-            if(!a.matches(b)) {
+            if (!a.matches(b)) {
                 return null
             }
-            if(a.pattern != null) {
+            if (a.pattern != null) {
                 arguments += b.argument!!
             }
         }

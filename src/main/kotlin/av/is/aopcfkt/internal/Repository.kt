@@ -4,11 +4,12 @@ import av.`is`.aopcfkt.patterns.PatternEntry
 import java.util.*
 import javax.inject.Inject
 
-class Repository @Inject constructor(private val type: Class<*>,
-                                     val instance: Any,
-                                     mappers: MutableSet<Mapper>,
-                                     private val commandContexts: MutableSet<CommandContext>) {
-
+class Repository @Inject constructor(
+    private val type: Class<*>,
+    val instance: Any,
+    mappers: MutableSet<Mapper>,
+    private val commandContexts: MutableSet<CommandContext>
+) {
     private val mappers: MutableSet<Mapper> = mappers.also {
         it.forEach { mapper -> mapper.setRepository(this) }
     }
@@ -25,12 +26,11 @@ class Repository @Inject constructor(private val type: Class<*>,
     }
 
     fun getMapped(patternEntries: List<PatternEntry<*>>): Any? {
-        for(mapper in mappers) {
+        for (mapper in mappers) {
             mapper.tryInvoke(patternEntries)?.let {
                 return it
             }
         }
         return null
     }
-
 }

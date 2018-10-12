@@ -3,11 +3,9 @@ package av.`is`.aopcfkt.example
 import av.`is`.aopcfkt.Command
 import av.`is`.aopcfkt.CommandRepository
 import av.`is`.aopcfkt.ParameterMapper
-import java.lang.Exception
 
 @CommandRepository
 class ExampleRepository {
-
     @ParameterMapper(":name :amount")
     fun c(name: String, amount: Int): Example {
         println("c()")
@@ -42,5 +40,4 @@ class ExampleRepository {
     fun command(example: Example) {
 
     }
-
 }

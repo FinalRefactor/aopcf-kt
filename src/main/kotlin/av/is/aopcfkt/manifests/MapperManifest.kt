@@ -8,9 +8,7 @@ import com.google.inject.Provides
 import com.google.inject.name.Names
 import java.lang.reflect.Method
 
-class MapperManifest(private val method: Method,
-                     private val mapper: ParameterMapper) : AbstractModule() {
-
+class MapperManifest(private val method: Method, private val mapper: ParameterMapper) : AbstractModule() {
     @Provides
     fun pattern(): String {
         return mapper.value

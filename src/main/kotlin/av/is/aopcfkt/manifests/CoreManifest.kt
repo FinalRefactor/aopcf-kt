@@ -9,21 +9,23 @@ import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import com.google.inject.Injector
 
-class CoreManifest(private val injector: Injector,
-                   private val classes: Array<Class<*>>) : AbstractModule() {
-
+class CoreManifest(private val injector: Injector, private val classes: Array<Class<*>>) : AbstractModule() {
     override fun configure() {
         val binder = ComponentBinder(injector, binder())
         binder.newClass(classes.toList())
-                .transform(CommandRepository::class.java, Repository::class.java) { element, _ -> RepositoryManifest(injector, element) }
-                .bind()
+            .transform(CommandRepository::class.java, Repository::class.java) { element, _ ->
+                RepositoryManifest(
+                    injector,
+                    element
+                )
+            }.bind()
     }
-
 }
 
 fun main(args: Array<String>) {
     val injector = Guice.createInjector()
-    val repositories = injector.createChildInjector(CoreManifest(injector, arrayOf(ExampleRepository::class.java))).getInstance(Repositories::class.java)
+    val repositories = injector.createChildInjector(CoreManifest(injector, arrayOf(ExampleRepository::class.java)))
+        .getInstance(Repositories::class.java)
 
     repositories.prints()
 }
