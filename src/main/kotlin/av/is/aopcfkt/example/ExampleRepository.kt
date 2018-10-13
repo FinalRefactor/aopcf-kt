@@ -27,11 +27,7 @@ class ExampleRepository {
     @ParameterMapper(":name1 :name2")
     fun e(name1: String, name2: String): Example {
         println("e()")
-        var i = 0
-        try {
-            i = name2.toInt()
-        } catch (ignored: Exception) {
-        }
+        val i = name2.toIntOrNull() ?: 0
 
         return Example(name1, i)
     }

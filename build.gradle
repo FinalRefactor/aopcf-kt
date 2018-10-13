@@ -15,6 +15,7 @@ repositories {
 
 dependencies {
     api group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8'
+    api group: 'org.jetbrains.kotlin', name: 'kotlin-reflect'
 
     api group: 'com.google.guava', name: 'guava', version: '26.0-jre'
     api group: 'com.google.inject', name: 'guice', version: '4.2.0'

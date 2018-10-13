@@ -10,9 +10,7 @@ import java.lang.reflect.Method
 
 class CommandManifest(private val method: Method, private val command: Command) : AbstractModule() {
     @Provides
-    fun command(): Command {
-        return command
-    }
+    fun command(): Command = command
 
     override fun configure() {
         bind(CommandContext::class.java).to(CommandContextImpl::class.java)

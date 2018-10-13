@@ -2,23 +2,10 @@ package av.`is`.aopcfkt.patterns
 
 import com.google.common.base.Objects
 
-class PatternEntry<T : Any> {
-    val argument: T?
-    val pattern: String?
-    private val parameterType: Class<T>
-
-    constructor(argument: T?, pattern: String?, parameterType: Class<T>) {
-        this.argument = argument
-        this.pattern = pattern
-        this.parameterType = parameterType
-    }
-
+class PatternEntry<T : Any>(val argument: T?, val pattern: String?, private val parameterType: Class<T>) {
     constructor(argument: T) : this(argument, argument.javaClass)
-    constructor(argument: T, parameterType: Class<T>) {
-        this.argument = argument
-        this.pattern = null
-        this.parameterType = parameterType
-    }
+
+    constructor(argument: T, parameterType: Class<T>) : this(argument, null, parameterType)
 
     override fun hashCode(): Int {
         return Objects.hashCode(argument, pattern, parameterType)

@@ -37,18 +37,14 @@ class MapperImpl @Inject constructor(@Named("mapper") private val method: Method
         this.repository = repository
     }
 
-    override fun returnType(): Class<*> {
-        return method.returnType
-    }
+    override fun returnType(): Class<*> = method.returnType
 
     override fun prints() {
         println(" - method: $method")
         println(" - pattern: $pattern")
     }
 
-    override fun hashCode(): Int {
-        return Objects.hashCode(method, pattern, entries, repository)
-    }
+    override fun hashCode(): Int = Objects.hashCode(method, pattern, entries, repository)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

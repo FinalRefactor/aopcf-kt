@@ -10,9 +10,7 @@ import javax.inject.Named
 class CommandContextImpl @Inject constructor(
     @Named("command") private val method: Method, private val command: Command
 ) : CommandContext {
-    override fun hashCode(): Int {
-        return Objects.hashCode(method, command)
-    }
+    override fun hashCode(): Int = Objects.hashCode(method, command)
 
     override fun prints() {
         println(" - method: $method")

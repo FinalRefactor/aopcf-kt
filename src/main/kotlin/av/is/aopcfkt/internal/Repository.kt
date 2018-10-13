@@ -19,7 +19,9 @@ class Repository @Inject constructor(
         println("mappers: ${mappers.size}")
         mappers.forEach { it.prints() }
         println("commands: ${commandContexts.size}")
-        commandContexts.forEach { it.prints() }
+        commandContexts.forEach {
+            it.prints()
+        }
 
         val o = getMapped(listOf(PatternEntry("my name"), PatternEntry("plus"), PatternEntry(5, Int::class.java)))
         println(Optional.ofNullable(o).orElse("null").toString())

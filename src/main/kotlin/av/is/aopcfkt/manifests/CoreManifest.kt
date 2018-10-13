@@ -12,13 +12,9 @@ import com.google.inject.Injector
 class CoreManifest(private val injector: Injector, private val classes: Array<Class<*>>) : AbstractModule() {
     override fun configure() {
         val binder = ComponentBinder(injector, binder())
-        binder.newClass(classes.toList())
-            .transform(CommandRepository::class.java, Repository::class.java) { element, _ ->
-                RepositoryManifest(
-                    injector,
-                    element
-                )
-            }.bind()
+        binder.newClass(classes.toList()).transform<CommandRepository, Repository> { element, _ ->
+            RepositoryManifest(injector, element)
+        }.bind()
     }
 }
 
